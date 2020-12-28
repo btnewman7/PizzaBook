@@ -9,21 +9,21 @@ def get_product_categories():
 @app.context_processor
 def get_subtotal():
     if current_user.is_anonymous:
-        return {} 
+        return { 'subtotal': 0} 
     else:
         return { 'subtotal': round(sum([Product.query.get(i.product_id).price for i in Cart.query.filter_by(user_id=current_user.get_id()).all()]), 2) }
 
 @app.context_processor
 def get_grandtotal():
     if current_user.is_anonymous:
-        return {}
+        return { 'grandtotal': 0}
     else:
         return { 'grandtotal': round(sum([Product.query.get(i.product_id).price+Product.query.get(i.product_id).tax for i in Cart.query.filter_by(user_id=current_user.get_id()).all()]), 2) }
 
 @app.context_processor
 def get_cart_items():
     if current_user.is_anonymous:
-        return {}
+        return { 'cart_item': []}
     else:
         return { 'cart_items': Cart.query.filter_by(user_id=current_user.get_id()).all() }
 

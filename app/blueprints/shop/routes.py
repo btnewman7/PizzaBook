@@ -34,9 +34,14 @@ def category():
 
 @shop.route('/cart', methods=['GET'])
 def show_cart():
-    context = {
-        'products': [Product.query.get(i.product_id) for i in Cart.query.filter_by(user_id=current_user.id).all()]
-    }
+    if current_user.is_anonymous:
+        context = {
+            'products': []
+        }
+    else:    
+        context = {
+            'products': [Product.query.get(i.product_id) for i in Cart.query.filter_by(user_id=current_user.id).all()]
+        }
     return render_template('shop/cart.html', **context)
 
 @shop.route('/cart/remove', methods=['GET'])
