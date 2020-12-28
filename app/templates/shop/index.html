@@ -1,0 +1,76 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    {{ super() }}Shop
+{% endblock title %}
+
+{% set active_page = 'shop.index' %}
+
+{% block content %}
+<h1>Shop Page</h1>
+<hr>
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">It's a Pizza Shop!</h1>
+        <p class="lead text-muted mb-0">Where Pies become Pizzas and Toppings become Ingredients!</p>
+    </div>
+</section>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('shop.index') }}">Home</a></li>
+                    {%  if category %}
+                    <li class="breadcrumb-item">{{ category.name }}</li>
+                    {% endif %}
+                    <!-- <li class="breadcrumb-item active" aria-current="page">Sub-category</li> -->
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        {% include 'shop/includes/sidebar.html' %}
+        <div class="col">
+            <div class="row">
+                {% for p in products %}
+                <div class="col-12 col-md-6 col-lg-4 product">
+                    <div class="card">
+                        <img class="card-img-top img-fluid" src="{{ p.image }}" alt="{{ p.name }}">
+                        <div class="card-body">
+                            <h4 class="card-title"><a href="{{ url_for('shop.single', id=p.id) }}" title="View Product">{{ p.name }}</a></h4>
+                            <p class="card-text">{{ p.description|truncate(100) }}</p>
+                            <div class="row">
+                                <p class="btn btn-danger btn-block">{{ '${:,.2f}'.format(p.price) }}</p>
+                                    <a class="btn btn-success btn-block" href="{{ url_for('shop.add_to_cart', product_id=p.id) }}">Add to cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                {% endfor %}
+                <div class="col-12">
+                    <nav aria-label="...">
+                        <ul class="pagination">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">Previous</a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item active">
+                                <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
